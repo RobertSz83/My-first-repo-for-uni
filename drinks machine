@@ -1,0 +1,35 @@
+// drinks machine
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+main ()
+{
+    int select_a_product;
+    cout<< "Select the drink number you want" << endl;
+    cout << "1. coca cola"<< endl;
+    cout << "2. coca cola diet"<< endl;
+    cout << "3. coffe"<< endl;
+    cout << "4. coffe with milk"<< endl;
+    cout << "5. tea"<< endl;
+    cout << "6. chocolate"<< endl;
+
+    cin>> select_a_product;
+
+    if (select_a_product==1)
+    cout<< "coca cola"<< endl;
+    else if (select_a_product==2)
+    cout<< "coca cola diet"<< endl;
+    else if (select_a_product==3)
+    cout<< "coffe"<< endl;
+    else if (select_a_product==4)
+    cout<< "coffe with milk"<< endl;
+     else if (select_a_product==5)
+    cout<< "tea"<< endl;
+    else if (select_a_product==6)
+    cout<< "chocolate"<< endl;
+    else
+    cout << "no assortment"<< endl;
+
+    return 0;
+}
