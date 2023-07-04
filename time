@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    int t, hrs = 0, m = 0, s = 0, divider;
+    cin >> t;
+
+    if (t >= 3600) {
+        divider = t / 3600;
+        t -= divider * 3600;
+        hrs += divider;
+    }
+    if (t >= 60) {
+        divider = t / 60;
+        t -= divider * 60;
+        m += divider;
+    }
+    if (t >= 1) {
+        s = t;
+    }
+
+    cout << hrs << "hrs" << m << "m" << s << "s";
+
+    return 0;
+
+}
