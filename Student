@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Student {
+private:
+    string name;
+    string surname;
+    string indexNumber;
+    vector<float> grades;
+
+public:
+    void upload() {
+        cout << "Enter the student's name: ";
+        cin >> name;
+
+        cout << "Enter the student's surname: ";
+        cin >> surname;
+
+        cout << "Enter the student's index number: ";
+        cin >> indexNumber;
+    }
+
+    void write() {
+        cout << "Student's name: " << name << endl;
+        cout << "Student's surname: " << surname << endl;
+        cout << "Student's index number: " << indexNumber << endl;
+    }
+
+    void addGrade(float grade) {
+        grades.push_back(grade);
+    }
+
+    float averageGrade() {
+        if (grades.empty()) {
+            return 0.0f;
+        }
+
+        float sum = 0;
+        for (int i = 0; i < grades.size(); i++) {
+            sum += grades[i];
+        }
+        return sum / grades.size();
+    }
+
+    void initialize(string name1, string surname1, string indexNumber1) {
+        name = name1;
+        surname = surname1;
+        indexNumber = indexNumber1;
+    }
+};
+
+int main() {
+    Student s;
+    s.upload();
+    s.addGrade(4);
+    s.addGrade(3);
+    s.addGrade(5);
+    s.write();
+    cout << "Average grade: " << s.averageGrade() << endl;
+
+    Student* s2 = new Student;
+    s2->upload();
+    s2->addGrade(3);
+    s2->addGrade(4.5);
+    s2->addGrade(6);
+    s2->write();
+    cout << "Average grade: " << s2->averageGrade() << endl;
+    delete s2;
+
+    return 0;
+}
