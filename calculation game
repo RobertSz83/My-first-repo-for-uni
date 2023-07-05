@@ -1,0 +1,44 @@
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+int main() {
+    int score = 0;
+    srand(time(NULL)); // initialize the pseudo-random number generator
+
+    cout << "Welcome to the fast calculation game!" << endl;
+    cout << "Enter 0 to quit the game." << endl;
+
+    while (true) {
+        // Generate two random integers in the range from 1 to 10
+        int a = rand() % 10 + 1;
+        int b = rand() % 10 + 1;
+
+        // Choose a random arithmetic operator (+, -, *, /)
+        char op = "+-*/"[rand() % 4];
+
+        // Display the task and get the player's answer
+        cout << a << " " << op << " " << b << " = ";
+        int answer;
+        cin >> answer;
+
+        // Check the answer and update the player's score
+        if (answer == 0) {
+            break; // end the game
+        } else if ((op == '+' && answer == a + b) ||
+                   (op == '-' && answer == a - b) ||
+                   (op == '*' && answer == a * b) ||
+                   (op == '/' && answer == a / b)) {
+            cout << "Correct!" << endl;
+            score++;
+        } else {
+            cout << "Wrong! The correct answer is " << (op == '+' ? a + b :
+                    op == '-' ? a - b :
+                    op == '*' ? a * b : a / b) << endl;
+        }
+    }
+
+    // Display the final score and end the program
+    cout << "Your score: " << score << endl;
+    return 0;
+}
