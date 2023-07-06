@@ -1,0 +1,111 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Item {
+public:
+Item() : weight(0){};
+int getWeight() {
+return weight;
+}
+void setWeight(int w) {
+weight = w;
+}
+virtual string description() {
+return "Weight class: " + to_string(weight);
+}
+virtual void action() = 0;
+
+protected:
+int weight;
+};
+
+class MagicWand : public Item {
+public:
+MagicWand(string s) : spell(s) {};
+void action() {
+cout << spell << endl;
+}
+string description() {
+return "Magic wand " + spell;
+}
+private:
+string spell;
+};
+
+class HuntingBow : public Item {
+public:
+HuntingBow(int a) : arrow(a) {};
+void action() {
+arrow--;
+if (arrow > 0) {
+arrow--;
+}
+cout << "Available arrows: " << arrow << endl;
+}
+void addArrow(int a) {
+arrow += a;
+}
+string description() {
+return "Hunting bow, remaining arrows: " + to_string(arrow);
+}
+private:
+int arrow;
+};
+
+class Flashlight : public Item {
+public:
+Flashlight(bool l) : light(l) {};
+void action() {
+if (light == true) {
+cout << "Flashlight is on" << endl;
+} else {
+cout << "Flashlight is off" << endl;
+}
+light = !light;
+}
+string description() {
+if (light == true) {
+return "Flashlight is on";
+} else {
+return "Flashlight is off";
+}
+}
+private:
+bool light;
+};
+
+class Backpack {
+public:
+void addItem(Item* i) {
+items.push_back(i);
+}
+void listItems() {
+for (int i = 0; i < items.size(); i++) {
+cout << i + 1 << ". Item: " << items[i]->description() << endl;
+}
+}
+void removeItem(int index) {
+items.erase(items.begin() + index);
+}
+Item* getItem(int index) {
+return items.at(index);
+}
+private:
+vector<Item*> items;
+};
+
+int main() {
+Backpack backpack;
+backpack.addItem(new MagicWand("Hocus pocus"));
+backpack.addItem(new HuntingBow(6));
+Flashlight flashlight(false);
+backpack.addItem(&flashlight);
+backpack.listItems();
+backpack.getItem(0)->action();
+backpack.getItem(1)->action();
+backpack.getItem(2)->action();
+backpack.getItem(2)->action();
+return 0;
+}
