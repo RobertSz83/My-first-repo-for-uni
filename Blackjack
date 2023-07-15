@@ -1,0 +1,202 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <ctime>
+#include <algorithm>
+
+enum Rank { ACE = 1, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING };
+enum Suit { CLUBS, DIAMONDS, HEARTS, SPADES };
+
+struct Card {
+    Rank rank;
+    Suit suit;
+};
+
+class Deck {
+private:
+    std::vector<Card> cards;
+
+public:
+    Deck() {
+        for (int suit = CLUBS; suit <= SPADES; ++suit) {
+            for (int rank = ACE; rank <= KING; ++rank) {
+                cards.push_back({ static_cast<Rank>(rank), static_cast<Suit>(suit) });
+            }
+        }
+    }
+
+    void shuffle() {
+        std::srand(static_cast<unsigned int>(std::time(nullptr)));
+        std::random_shuffle(cards.begin(), cards.end());
+    }
+
+    Card dealCard() {
+        Card dealtCard = cards.back();
+        cards.pop_back();
+        return dealtCard;
+    }
+};
+
+int getCardValue(const Card& card) {
+    switch (card.rank) {
+    case ACE:
+        return 11;
+    case TWO:
+        return 2;
+    case THREE:
+        return 3;
+    case FOUR:
+        return 4;
+    case FIVE:
+        return 5;
+    case SIX:
+        return 6;
+    case SEVEN:
+        return 7;
+    case EIGHT:
+        return 8;
+    case NINE:
+        return 9;
+    default:
+        return 10;
+    }
+}
+
+void printHand(const std::vector<Card>& hand) {
+    for (const Card& card : hand) {
+        std::string rank;
+        switch (card.rank) {
+        case ACE:
+            rank = "Ace";
+            break;
+        case TWO:
+            rank = "Two";
+            break;
+        case THREE:
+            rank = "Three";
+            break;
+        case FOUR:
+            rank = "Four";
+            break;
+        case FIVE:
+            rank = "Five";
+            break;
+        case SIX:
+            rank = "Six";
+            break;
+        case SEVEN:
+            rank = "Seven";
+            break;
+        case EIGHT:
+            rank = "Eight";
+            break;
+        case NINE:
+            rank = "Nine";
+            break;
+        case TEN:
+            rank = "Ten";
+            break;
+        case JACK:
+            rank = "Jack";
+            break;
+        case QUEEN:
+            rank = "Queen";
+            break;
+        case KING:
+            rank = "King";
+            break;
+        }
+        std::cout << rank << " of ";
+
+        std::string suit;
+        switch (card.suit) {
+        case CLUBS:
+            suit = "Clubs";
+            break;
+        case DIAMONDS:
+            suit = "Diamonds";
+            break;
+        case HEARTS:
+            suit = "Hearts";
+            break;
+        case SPADES:
+            suit = "Spades";
+            break;
+        }
+        std::cout << suit << std::endl;
+    }
+}
+
+int main() {
+    std::cout << "Welcome to Blackjack!" << std::endl;
+
+    Deck deck;
+    deck.shuffle();
+
+    std::vector<Card> playerHand;
+    std::vector<Card> dealerHand;
+
+    playerHand.push_back(deck.dealCard());
+    dealerHand.push_back(deck.dealCard());
+    playerHand.push_back(deck.dealCard());
+    dealerHand.push_back(deck.dealCard());
+
+    std::cout << "Player's hand:" << std::endl;
+    printHand(playerHand);
+
+    std::cout << std::endl << "Dealer's hand:" << std::endl;
+    std::cout << "First card is hidden." << std::endl;
+    std::cout << "Second card:" << std::endl;
+    printHand(dealerHand);
+
+    int playerScore = getCardValue(playerHand[0]) + getCardValue(playerHand[1]);
+    int dealerScore = getCardValue(dealerHand[0]) + getCardValue(dealerHand[1]);
+
+    char choice;
+    std::cout << std::endl << "Do you want to hit? (y/n): ";
+    std::cin >> choice;
+
+    while (choice == 'y') {
+        playerHand.push_back(deck.dealCard());
+        playerScore += getCardValue(playerHand.back());
+
+        std::cout << std::endl << "Player's hand:" << std::endl;
+        printHand(playerHand);
+
+        if (playerScore > 21) {
+            std::cout << std::endl << "Bust! You lose." << std::endl;
+            return 0;
+        }
+
+        std::cout << std::endl << "Do you want to hit? (y/n): ";
+        std::cin >> choice;
+    }
+
+    std::cout << std::endl << "Dealer's turn:" << std::endl;
+    std::cout << "Dealer's hand:" << std::endl;
+    printHand(dealerHand);
+
+    while (dealerScore < 17) {
+        dealerHand.push_back(deck.dealCard());
+        dealerScore += getCardValue(dealerHand.back());
+
+        std::cout << std::endl << "Dealer draws a card." << std::endl;
+        std::cout << "Dealer's hand:" << std::endl;
+        printHand(dealerHand);
+    }
+
+    std::cout << std::endl << "Player's score: " << playerScore << std::endl;
+    std::cout << "Dealer's score: " << dealerScore << std::endl;
+
+    if (dealerScore > 21) {
+        std::cout << std::endl << "Dealer busts! You win." << std::endl;
+    } else if (playerScore > dealerScore) {
+        std::cout << std::endl << "You win!" << std::endl;
+    } else if (playerScore < dealerScore) {
+        std::cout << std::endl << "You lose." << std::endl;
+    } else {
+        std::cout << std::endl << "It's a tie." << std::endl;
+    }
+
+    return 0;
+}
