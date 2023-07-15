@@ -1,0 +1,103 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <ctime>
+#include <cstdlib>
+
+std::vector<std::string> words = {"apple", "banana", "orange", "grape", "pineapple", "strawberry", "kiwi", "mango", "lemon", avocado"};
+const int MAX_TRIES = 6;
+
+std::string selectRandomWord() {
+    srand(static_cast<unsigned int>(time(0)));
+    int randomIndex = rand() % words.size();
+    return words[randomIndex];
+}
+
+std::string hideWord(const std::string& word) {
+    std::string hiddenWord;
+    for (char c : word) {
+        hiddenWord += '_';
+    }
+    return hiddenWord;
+}
+
+void updateHiddenWord(std::string& hiddenWord, const std::string& word, char guess) {
+    for (int i = 0; i < word.length(); ++i) {
+        if (word[i] == guess) {
+            hiddenWord[i] = guess;
+        }
+    }
+}
+
+void printHangman(int numTries) {
+    std::cout << "  ____" << std::endl;
+    std::cout << "  |  |" << std::endl;
+
+    if (numTries >= 1)
+        std::cout << "  |  O" << std::endl;
+    else
+        std::cout << "  |" << std::endl;
+
+    if (numTries == 2)
+        std::cout << "  |  |" << std::endl;
+    else if (numTries == 3)
+        std::cout << "  | \\|" << std::endl;
+    else if (numTries >= 4)
+        std::cout << "  | \\|/" << std::endl;
+
+    if (numTries == 5)
+        std::cout << "  |  |" << std::endl;
+    else if (numTries >= 6)
+        std::cout << "  | / \\" << std::endl;
+
+    std::cout << "__|__" << std::endl;
+}
+
+bool isWordComplete(const std::string& hiddenWord) {
+    return hiddenWord.find('_') == std::string::npos;
+}
+
+int main() {
+    std::string word = selectRandomWord();
+    std::string hiddenWord = hideWord(word);
+    int numTries = 0;
+    std::vector<char> guessedLetters;
+
+    std::cout << "Welcome to Word Guessing!" << std::endl;
+
+    while (numTries < MAX_TRIES) {
+        std::cout << std::endl;
+        printHangman(numTries);
+        std::cout << "Current word: " << hiddenWord << std::endl;
+
+        char guess;
+        std::cout << "Enter your guess: ";
+        std::cin >> guess;
+
+        if (std::find(guessedLetters.begin(), guessedLetters.end(), guess) != guessedLetters.end()) {
+            std::cout << "You already guessed that letter. Try again." << std::endl;
+            continue;
+        }
+
+        guessedLetters.push_back(guess);
+
+        if (word.find(guess) != std::string::npos) {
+            updateHiddenWord(hiddenWord, word, guess);
+            if (isWordComplete(hiddenWord)) {
+                std::cout << "Congratulations! You guessed the word correctly: " << word << std::endl;
+                break;
+            }
+        } else {
+            std::cout << "Incorrect guess!" << std::endl;
+            numTries++;
+        }
+    }
+
+    if (numTries == MAX_TRIES) {
+        std::cout << std::endl;
+        printHangman(numTries);
+        std::cout << "You ran out of tries. The word was: " << word << std::endl;
+    }
+
+    return 0;
+}
