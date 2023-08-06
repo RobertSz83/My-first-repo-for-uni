@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aktualny czas</title>
+    <script type="text/javascript">
+        function updateTime() {
+            const timezone = document.getElementById('timezone').value;
+            const options = { timeZone: timezone, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const timeElement = document.getElementById('time');
+            const currentTime = new Date().toLocaleTimeString([], options);
+            timeElement.textContent = currentTime;
+        }
+
+        function changeTimezone() {
+            updateTime();
+        }
+
+
+        setInterval(updateTime, 1000);
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Current Time:</h1>
+        <div id="time">00:00:00</div>
+        <label for="timezone">Select a time zone:</label>
+        <select id="timezone" onchange="changeTimezone()">
+            <option value="Europe/Warsaw">Europe/Warsaw</option>
+            <option value="America/New_York">America/New_York</option>
+            <option value="Asia/Tokyo">Asia/Tokyo</option>
+            <option value="Europe/London">Europe/London</option>
+            <option value="Australia/Sydney">Australia/Sydney</option>
+            <option value="America/Los_Angeles">America/Los_Angeles</option>
+            
+        </select>
+    </div>
+</body>
+</html>
