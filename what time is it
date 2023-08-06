@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Aktualny czas</title>
+    <title>Current Time</title>
     <script type="text/javascript">
         function updateTime() {
             const timezone = document.getElementById('timezone').value;
